@@ -1,0 +1,6 @@
+{:aliases
+ {:export
+  {:extra-deps
+   {datascript/datascript {:mvn/version "1.7.4"}
+    hiccup/hiccup         {:mvn/version "2.0.0-RC4"}}
+   :main-opts ["-m" "export"]}}}

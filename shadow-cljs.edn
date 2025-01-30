@@ -1,0 +1,11 @@
+{:dependencies
+ [[datascript "1.7.4"]
+  [no.cjohansen/replicant "2025.01.03.3"]
+  [metosin/reitit "0.7.2"]]
+ :source-paths ["src"]
+ :dev-http {3000 "public"}
+ :builds
+ {:site
+  {:target :browser
+   :modules {:main {:init-fn site.main/init}}
+   :compiler-options {:externs ["datascript/externs.js"]}}}}

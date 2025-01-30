@@ -1,0 +1,8 @@
+[{:db/id 2
+  :entry/type :note
+  :entry/slug "beginners-mind"
+  :entry/title "Beginner's Mind"
+  :entry/summary "\"Beginner's mind\" comes from Zen Buddhism and refers to approaching life with an open and non-judgmental attitude."
+  :entry/created-at #inst "2025-01-25T20:28:44.846-00:00"
+  :entry/body
+  ([:p "The maxim is to approach things as a beginner regardless of how experienced you are. This mindset allows you to stay open to new perspectives. In practical terms, it means staying humble and receptive, not letting past experiences cloud fresh perspectives. It can help encourage you to explore new ideas without the fear of failure or judgment."])}]

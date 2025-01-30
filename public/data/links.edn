@@ -1,0 +1,14 @@
+[{:db/id 3
+  :entry/type :link
+  :entry/slug "life-with-dynamic-typing"
+  :entry/title "Life with Dynamic Typing"
+  :entry/summary "As with many things in the realm of Computer, some choices involve big tradeoffs. One of these is choosing to write software with a dynamic programming language."
+  :entry/created-at #inst "2025-01-27T04:22:14.644-00:00"
+  :entry/external-link "https://swannodette.github.io/2015/01/09/life-with-dynamic-typing"}
+ {:db/id 4
+  :entry/type :link
+  :entry/slug "chatting-cats-use-datascript"
+  :entry/title "Chatting Cats Use DataScript for Fun"
+  :entry/summary "What DataScript-driven application looks like? Does DataScript really makes the difference? I tried to answer both questions by writing a small single-page application."
+  :entry/created-at #inst "2025-01-28T18:51:10.303-00:00"
+  :entry/external-link "https://tonsky.me/blog/datascript-chat/"}]

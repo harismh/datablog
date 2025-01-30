@@ -1,0 +1,50 @@
+[{:db/id 5
+  :entry/type :essay
+  :entry/slug "isomorphic-blogging-a-rationale"
+  :entry/title "Isomorphic Blogging: A Rationale"
+  :entry/summary "How blogging with isomorphic Clojure code blends the best of static sites with the best of dynamic sites."
+  :entry/body
+  ([:p "Blogs are web pages that work well as static sites—until you want something more interactive. Then, it feels like you have to abandon the MPA approach wholesale and switch to building an SPA. SPAs work for a while until you need to serve content outside the browser, say, in an email. That's when duplication begins. You either duplicate the content representation (JSX, Markdown) or the presentation logic. One way to avoid this is by choosing a framework like Next.js or Astro which offer solutions like Incremental Static Regeneration (ISR) or partial hydration, but these often come a lot of build magic and vendor lock-in."]
+   [:p "Another approach, what I am exploring here, is to decouple storage and presentation entirely. In essence, blogs are glorified file viewers, displaying either raw HTML or HTML generated from Markdown. File systems and databases handle this job well, given an ergonomic format. Manipulating raw strings isn't ideal, but the Clojure ecosystem offers a better format for this problem."]
+   [:p "One format in the Clojure world is EDN (Extensible Data Notation). EDN is a more expressive alternative to JSON, offering a richer set of data types beyond the usual strings, numbers, arrays, and objects. These include keywords, lists, and maps with rich keys. For example, you could represent an HTML button in EDN like this:"]
+   [:code "[:button \"Click me\"]"]
+   [:p "This is slightly better and more succinct. But we can go further."]
+   [:p "Enter "
+    [:a {:href "https://github.com/cjohansen/replicant"
+         :target "_blank"} "Replicant"]
+    ", a ClojureScript library that lets us render EDN directly to the DOM. Replicant takes the EDN data we're working with and transfigures it into HTML without any intermediaries. It also extends HTML to define interactions using more EDN:"]
+   [:code "[:button {:on {:click [:alert \"Clicked!\"]}} \"Click me\"]"]
+   [:p "Now, when Replicant encounters this HTML, it will register a callback that will, by default, dispatch to a global event listener. This listener can be defined to perform whatever actions we wish and will receive whatever we pass in (in this case, a tuple with keyword "
+    [:code ":alert"]
+    " and \"Clicked\"). This pattern of expressing HTML as EDN is called Hiccup—after a well-known library that popularized the idea. Replicant extended the idea with serializable Hiccup and declarative callbacks."]
+   [:span [:button {:on {:click [:alert "Clicked!"]}} "Click me"]]
+   [:p "With a way to express, render, and interact with HTML, we now need a way to query and build our EDN. Here's where another Clojure library comes in: "
+    [:a {:href "https://github.com/tonsky/datascript"
+         :target "_blank"} "DataScript"]
+    ". DataScript is an in-memory database for ClojureScript that allows us to store data and query it in a relational way. It runs in the browser, which means we don't need a complex backend or any server. Moreover, DataScript has built-in support for EDN, so you can store and retrieve your Hiccup without serialization."]
+   [:p "DataScript allows us to store our content once, then query and render it however we like—whether on the homepage, within aggregated lists, or more. Features like search can be done completely in the browser without any network requests. Here's a naive (but serviceable) search engine in 10 lines of ClojureScript:"]
+   [:code
+    "(defn search-entries [db query]
+  (let [rows       (d/q
+                    '[:find ?e ?t
+                      :where
+                      [?e :entry/title ?t]]
+                    db)
+        normalized (map (fn [[e t]] [e (str/lower-case t)]) rows)
+        matches    (filter (fn [[_ t]] (str/includes? t query)) normalized)]
+    (when (seq matches)
+      (map (fn [[e]] (d/entity db e)) matches))))"]
+   [:p "With Hiccup, DataScript, and Replicant, we have a complete way to describe content—from storage, to querying, to rendering it in the DOM. There's no need to generate static HTML files upfront or run complex build processes every time you update your content. You can treat your blog as a dynamic, queryable collection of data, where content is stored, queried, and rendered on-the-fly. You can add, modify, or delete content without needing to rebuild or redeploy your entire site. And with automatic offline support, you can still achieve static-site-like speed but with the flexibility of a dynamic, interactive SPA."]
+   [:p "But what about bundle sizes?"]
+   [:p "Though JavaScript is still involved, DataScript-backed SPAs tend to perform better than traditional SPAs. Once the app is initialized, the entire blog's content is loaded into memory. This means there are no additional network requests when searching, filtering, or navigating. DataScript's EAV (Entity-Attribute-Value) model is also context-free, so the same data can be repurposed in different parts of the blog. For instance, a tag may be displayed underneath a heading in an article but also grouped by count in a tag list elsewhere—all without any server endpoints."]
+   [:p "But what if you don't want any JavaScript?"]
+   [:p "The real beauty of this system lies in its isomorphism. The formats and libraries used here—EDN, Hiccup, and DataScript—all work equally well on both the server and in the browser. This isn't some magic bundling trick or \"use server\" header injection; the exact same code runs in both environments."]
+   [:p "This is possible because the code is written in .cljc files, which are Clojure complier source files that can be compiled and run both on the JVM (Clojure) and in the browser (ClojureScript). This means your entire application, including the data management and HTML rendering logic, can run in a pure Clojure environment on the server for an MPA, or once during static generation for SEO."]
+   [:p "However, a technical discussion wouldn't be complete until the tradeoffs are acknowledged. In-memory databases like DataScript are limited by the available RAM on a visitor's machine, and their performance can degrade as the data grows. For larger-scale applications, you may still need to rely on a more traditional server/client setup to scale effectively, a concern that may never show up for personal blogs. Moreover, newer projects like "
+    [:a {:href "https://github.com/darkleaf/hazel"
+         :target "_blank"} "Hazel"]
+    " continue to show the benefits of adopting DataScript even when the data is partially streamed."]
+   [:hr]
+   [:p "By decoupling storage and presentation, you can create a dynamic blog system that minimizes duplication, avoids heavy framework dependencies, and sidesteps the complexities of traditional CMSs or static-site generators. Not only does it offer flexibility, offline functionality, and better performance, but it also leverages the isomorphic capabilities of Clojure, allowing us to run the same code both on the server and in the browser. This approach blends the best of static sites (fast, simple) with the best of dynamic SPAs (interactive, flexible) in a way other methods often fail to achieve."]
+   [:p "And, having an entire in-memory database at your fingertips is just cool."])
+  :entry/created-at #inst "2025-01-30T01:48:39.907-00:00"}]
