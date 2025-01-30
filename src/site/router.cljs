@@ -18,11 +18,13 @@
   (rfe/start!
    router
    (fn [match _]
-     (let [slug (get-in match [:path-params :slug])]
+     (let [route (get-in match [:data :name])
+           slug (get-in match [:path-params :slug])]
        (d/transact!
         conn
-        [{:db/id db/site-eid
-          :site/current-route (:name (:data match))}
+        [(when route
+           {:db/id db/site-eid
+            :site/current-route route})
          (when slug
            {:db/id db/site-eid
             :site/current-slug slug})])))
