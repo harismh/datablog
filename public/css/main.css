@@ -131,6 +131,9 @@ code {
     font-family: IBM Plex Mono, monospace;
     font-size: var(--font-size);
     white-space: pre-wrap;
+    background-color: var(--theme-tile-background);
+    padding: 1.5rem;
+    border-radius: 1rem;
 }
 
 pre {

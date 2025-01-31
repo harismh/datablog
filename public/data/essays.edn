@@ -27,11 +27,11 @@
     "(defn search-entries [db query]
   (let [rows       (d/q
                     '[:find ?e ?t
-                      :where
-                      [?e :entry/title ?t]]
+                      :where [?e :entry/title ?t]]
                     db)
         normalized (map (fn [[e t]] [e (str/lower-case t)]) rows)
-        matches    (filter (fn [[_ t]] (str/includes? t query)) normalized)]
+        matches    (filter (fn [[_ t]] (str/includes? t query)) 
+                     normalized)]
     (when (seq matches)
       (map (fn [[e]] (d/entity db e)) matches))))"]
    [:p "With Hiccup, DataScript, and Replicant, we have a complete way to describe content—from storage, to querying, to rendering it in the DOM. There's no need to generate static HTML files upfront or run complex build processes every time you update your content. You can treat your blog as a dynamic, queryable collection of data, where content is stored, queried, and rendered on-the-fly. You can add, modify, or delete content without needing to rebuild or redeploy your entire site. And with automatic offline support, you can still achieve static-site-like speed but with the flexibility of a dynamic, interactive SPA."]
