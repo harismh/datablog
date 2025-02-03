@@ -98,10 +98,9 @@
            x (.-deltaX e)
            s (.-scrollLeft (.-currentTarget e))]
        (when (not= 0 y)
-         (do
-           (.preventDefault e)
-           (set! (.-scrollLeft (.-currentTarget e))
-                 (+ s y x))))))))
+         (.preventDefault e)
+         (set! (.-scrollLeft (.-currentTarget e))
+               (+ s y x)))))))
 
 (defn gallery [db]
   [:div.gallery-scroll
