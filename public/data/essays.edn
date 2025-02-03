@@ -15,7 +15,7 @@
     ", a ClojureScript library that lets us render EDN directly to the DOM. Replicant takes the EDN data we're working with and transfigures it into HTML without any intermediaries. It also extends HTML to define interactions using more EDN:"]
    [:code "[:button {:on {:click [:alert \"Clicked!\"]}} \"Click me\"]"]
    [:p "Now, when Replicant encounters this HTML, it will register a callback that will, by default, dispatch to a global event listener. This listener can be defined to perform whatever actions we wish and will receive whatever we pass in (in this case, a tuple with keyword "
-    [:code ":alert"]
+    [:pre ":alert"]
     " and \"Clicked\"). This pattern of expressing HTML as EDN is called Hiccup—after a well-known library that popularized the idea. Replicant extended the idea with serializable Hiccup and declarative callbacks."]
    [:span [:button {:on {:click [:alert "Clicked!"]}} "Click me"]]
    [:p "With a way to express, render, and interact with HTML, we now need a way to query and build our EDN. Here's where another Clojure library comes in: "
